@@ -28,6 +28,7 @@ jobs:
       - name: 安装Yarn
         run: |
           npm install yarn -g
+          npm install react-router-dom
       - run: yarn -v
       
       - name: 构建静态资源
