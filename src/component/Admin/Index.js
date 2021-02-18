@@ -1,7 +1,7 @@
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
-import { blue, green, red, yellow } from "@material-ui/core/colors";
+import {blue, green, red, yellow} from "@material-ui/core/colors";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -15,7 +15,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import {
     Description,
@@ -31,20 +31,12 @@ import {
     Telegram
 } from "@material-ui/icons";
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-    CartesianGrid,
-    Legend,
-    Line,
-    LineChart,
-    Tooltip,
-    XAxis,
-    YAxis
-} from "recharts";
+import React, {useCallback, useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 import {ResponsiveContainer} from "recharts/lib/component/ResponsiveContainer";
 import TimeAgo from "timeago-react";
-import { toggleSnackbar } from "../../actions";
+import {toggleSnackbar} from "../../actions";
 import API from "../../middleware/Api";
 import pathHelper from "../../utils/page";
 
@@ -201,13 +193,13 @@ export default function Index() {
                     <DialogContentText id="alert-dialog-description">
                         <Typography>
                             {siteURL === "" &&
-                                "您尚未设定站点URL，是否要将其设定为当前的 " +
-                                    window.location.origin +
-                                    " ?"}
+                            "您尚未设定站点URL，是否要将其设定为当前的 " +
+                            window.location.origin +
+                            " ?"}
                             {siteURL !== "" &&
-                                "您设置的站点URL与当前实际不一致，是否要将其设定为当前的 " +
-                                    window.location.origin +
-                                    " ?"}
+                            "您设置的站点URL与当前实际不一致，是否要将其设定为当前的 " +
+                            window.location.origin +
+                            " ?"}
                         </Typography>
                         <Typography>
                             此设置非常重要，请确保其与您站点的实际地址一致。你可以在
@@ -234,11 +226,11 @@ export default function Index() {
                         aspect={pathHelper.isMobile() ? 4.0 / 3.0 : 3.0 / 1.0}
                     >
                         <LineChart width={1200} height={300} data={lineData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="name"/>
+                            <YAxis/>
+                            <Tooltip/>
+                            <Legend/>
                             <Line
                                 name={"文件"}
                                 type="monotone"
@@ -266,12 +258,12 @@ export default function Index() {
                     <Typography variant="button" display="block" gutterBottom>
                         总计
                     </Typography>
-                    <Divider />
+                    <Divider/>
                     <List className={classes.root}>
                         <ListItem>
                             <ListItemAvatar>
                                 <Avatar className={classes.userIcon}>
-                                    <People />
+                                    <People/>
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
@@ -282,7 +274,7 @@ export default function Index() {
                         <ListItem>
                             <ListItemAvatar>
                                 <Avatar className={classes.fileIcon}>
-                                    <FileCopy />
+                                    <FileCopy/>
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
@@ -293,7 +285,7 @@ export default function Index() {
                         <ListItem>
                             <ListItemAvatar>
                                 <Avatar className={classes.publicIcon}>
-                                    <Public />
+                                    <Public/>
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
@@ -304,7 +296,7 @@ export default function Index() {
                         <ListItem>
                             <ListItemAvatar>
                                 <Avatar className={classes.secretIcon}>
-                                    <Lock />
+                                    <Lock/>
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
@@ -330,12 +322,12 @@ export default function Index() {
                             <Typography className={classes.version}>
                                 {version.backend}{" "}
                                 {version.is_pro === "true" && (
-                                    <Chip size="small" label="Pro" />
+                                    <Chip size="small" label="Pro"/>
                                 )}
                             </Typography>
                         </div>
                     </div>
-                    <Divider />
+                    <Divider/>
                     <div>
                         <List component="nav" aria-label="main mailbox folders">
                             <ListItem
@@ -345,11 +337,11 @@ export default function Index() {
                                 }
                             >
                                 <ListItemIcon>
-                                    <Home />
+                                    <Home/>
                                 </ListItemIcon>
-                                <ListItemText primary="主页" />
+                                <ListItemText primary="主页"/>
                                 <ListItemIcon className={classes.iconRight}>
-                                    <Launch />
+                                    <Launch/>
                                 </ListItemIcon>
                             </ListItem>
                             <ListItem
@@ -361,11 +353,11 @@ export default function Index() {
                                 }
                             >
                                 <ListItemIcon>
-                                    <GitHub />
+                                    <GitHub/>
                                 </ListItemIcon>
-                                <ListItemText primary="GitHub" />
+                                <ListItemText primary="GitHub"/>
                                 <ListItemIcon className={classes.iconRight}>
-                                    <Launch />
+                                    <Launch/>
                                 </ListItemIcon>
                             </ListItem>
                             <ListItem
@@ -375,11 +367,11 @@ export default function Index() {
                                 }
                             >
                                 <ListItemIcon>
-                                    <Description />
+                                    <Description/>
                                 </ListItemIcon>
-                                <ListItemText primary="文档" />
+                                <ListItemText primary="文档"/>
                                 <ListItemIcon className={classes.iconRight}>
-                                    <Launch />
+                                    <Launch/>
                                 </ListItemIcon>
                             </ListItem>
                             <ListItem
@@ -389,11 +381,11 @@ export default function Index() {
                                 }
                             >
                                 <ListItemIcon>
-                                    <Forum />
+                                    <Forum/>
                                 </ListItemIcon>
-                                <ListItemText primary="讨论社区" />
+                                <ListItemText primary="讨论社区"/>
                                 <ListItemIcon className={classes.iconRight}>
-                                    <Launch />
+                                    <Launch/>
                                 </ListItemIcon>
                             </ListItem>
                             <ListItem
@@ -405,11 +397,11 @@ export default function Index() {
                                 }
                             >
                                 <ListItemIcon>
-                                    <Telegram />
+                                    <Telegram/>
                                 </ListItemIcon>
-                                <ListItemText primary="Telegram 群组" />
+                                <ListItemText primary="Telegram 群组"/>
                                 <ListItemIcon className={classes.iconRight}>
-                                    <Launch />
+                                    <Launch/>
                                 </ListItemIcon>
                             </ListItem>
                             <ListItem
@@ -420,12 +412,12 @@ export default function Index() {
                                     )
                                 }
                             >
-                                <ListItemIcon style={{ color: "#ff789d" }}>
-                                    <Favorite />
+                                <ListItemIcon style={{color: "#ff789d"}}>
+                                    <Favorite/>
                                 </ListItemIcon>
-                                <ListItemText primary="捐助开发者" />
+                                <ListItemText primary="捐助开发者"/>
                                 <ListItemIcon className={classes.iconRight}>
-                                    <Launch />
+                                    <Launch/>
                                 </ListItemIcon>
                             </ListItem>
                         </List>
@@ -436,71 +428,71 @@ export default function Index() {
                 <Paper className={classes.paper}>
                     <List>
                         {news &&
-                            news.map(v => (
-                                <>
-                                    <ListItem
-                                        button
-                                        alignItems="flex-start"
-                                        onClick={() =>
-                                            window.open(
-                                                "https://forum.cloudreve.org/d/" +
-                                                    v.id
-                                            )
-                                        }
-                                    >
-                                        <ListItemAvatar>
-                                            <Avatar
-                                                alt="Travis Howard"
-                                                src={
-                                                    newsUsers[
-                                                        v.relationships
-                                                            .startUser.data.id
+                        news.map(v => (
+                            <>
+                                <ListItem
+                                    button
+                                    alignItems="flex-start"
+                                    onClick={() =>
+                                        window.open(
+                                            "https://forum.cloudreve.org/d/" +
+                                            v.id
+                                        )
+                                    }
+                                >
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt="Travis Howard"
+                                            src={
+                                                newsUsers[
+                                                    v.relationships
+                                                        .startUser.data.id
                                                     ] &&
-                                                    newsUsers[
-                                                        v.relationships
-                                                            .startUser.data.id
+                                                newsUsers[
+                                                    v.relationships
+                                                        .startUser.data.id
                                                     ].avatarUrl
-                                                }
-                                            />
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary={v.attributes.title}
-                                            secondary={
-                                                <React.Fragment>
-                                                    <Typography
-                                                        component="span"
-                                                        variant="body2"
-                                                        className={
-                                                            classes.inline
-                                                        }
-                                                        color="textPrimary"
-                                                    >
-                                                        {newsUsers[
-                                                            v.relationships
-                                                                .startUser.data
-                                                                .id
-                                                        ] &&
-                                                            newsUsers[
-                                                                v.relationships
-                                                                    .startUser
-                                                                    .data.id
-                                                            ].username}{" "}
-                                                    </Typography>
-                                                    发表于{" "}
-                                                    <TimeAgo
-                                                        datetime={
-                                                            v.attributes
-                                                                .startTime
-                                                        }
-                                                        locale="zh_CN"
-                                                    />
-                                                </React.Fragment>
                                             }
                                         />
-                                    </ListItem>
-                                    <Divider />
-                                </>
-                            ))}
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={v.attributes.title}
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography
+                                                    component="span"
+                                                    variant="body2"
+                                                    className={
+                                                        classes.inline
+                                                    }
+                                                    color="textPrimary"
+                                                >
+                                                    {newsUsers[
+                                                        v.relationships
+                                                            .startUser.data
+                                                            .id
+                                                        ] &&
+                                                    newsUsers[
+                                                        v.relationships
+                                                            .startUser
+                                                            .data.id
+                                                        ].username}{" "}
+                                                </Typography>
+                                                发表于{" "}
+                                                <TimeAgo
+                                                    datetime={
+                                                        v.attributes
+                                                            .startTime
+                                                    }
+                                                    locale="zh_CN"
+                                                />
+                                            </React.Fragment>
+                                        }
+                                    />
+                                </ListItem>
+                                <Divider/>
+                            </>
+                        ))}
                     </List>
                 </Paper>
             </Grid>
