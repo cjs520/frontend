@@ -1,6 +1,7 @@
 import { AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { CloudreveFile, SortMethod } from "./../../types/index";
+import { closeContextMenu } from "../viewUpdate/action";
 
 export interface ActionSetFileList extends AnyAction {
     type: "SET_FILE_LIST";
@@ -9,7 +10,7 @@ export interface ActionSetFileList extends AnyAction {
 export const setFileList = (list: CloudreveFile[]): ActionSetFileList => {
     return {
         type: "SET_FILE_LIST",
-        list
+        list,
     };
 };
 
@@ -20,7 +21,7 @@ export interface ActionSetDirList extends AnyAction {
 export const setDirList = (list: CloudreveFile[]): ActionSetDirList => {
     return {
         type: "SET_DIR_LIST",
-        list
+        list,
     };
 };
 
@@ -31,9 +32,17 @@ export interface ActionSetSortMethod extends AnyAction {
 export const setSortMethod = (method: SortMethod): ActionSetSortMethod => {
     return {
         type: "SET_SORT_METHOD",
-        method
+        method,
     };
 };
+
+export const setSideBar = (open: boolean) => {
+    return {
+        type: "SET_SIDE_BAR",
+        open,
+    };
+};
+
 type SortFunc = (a: CloudreveFile, b: CloudreveFile) => number;
 const sortMethodFuncs: Record<SortMethod, SortFunc> = {
     sizePos: (a: CloudreveFile, b: CloudreveFile) => {
@@ -61,7 +70,7 @@ const sortMethodFuncs: Record<SortMethod, SortFunc> = {
     },
     timeRev: (a: CloudreveFile, b: CloudreveFile) => {
         return Date.parse(b.date) - Date.parse(a.date);
-    }
+    },
 };
 
 export const updateFileList = (
@@ -71,10 +80,10 @@ export const updateFileList = (
         const state = getState();
         // TODO: define state type
         const { sortMethod } = state.viewUpdate;
-        const dirList = list.filter(x => {
+        const dirList = list.filter((x) => {
             return x.type === "dir";
         });
-        const fileList = list.filter(x => {
+        const fileList = list.filter((x) => {
             return x.type === "file";
         });
         const sortFunc = sortMethodFuncs[sortMethod as SortMethod];
@@ -93,5 +102,17 @@ export const changeSortMethod = (
         dispatch(setSortMethod(method));
         dispatch(setDirList(dirList.sort(sortFunc)));
         dispatch(setFileList(fileList.sort(sortFunc)));
+    };
+};
+
+export const toggleObjectInfoSidebar = (
+    open: boolean
+): ThunkAction<any, any, any, any> => {
+    return (dispatch, getState): void => {
+        const state = getState();
+        if (open) {
+            dispatch(closeContextMenu());
+        }
+        dispatch(setSideBar(true));
     };
 };

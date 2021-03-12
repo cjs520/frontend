@@ -8,7 +8,13 @@ export interface ActionSetSubtitle extends AnyAction {
 export const setSubtitle = (title: string): ActionSetSubtitle => {
     return {
         type: "SET_SUBTITLE",
-        title
+        title,
+    };
+};
+
+export const closeContextMenu = () => {
+    return {
+        type: "CLOSE_CONTEXT_MENU",
     };
 };
 

@@ -22,18 +22,18 @@ import AlertDialog from "../../Dialogs/Alert";
 import MagicVar from "../../Dialogs/MagicVar";
 import DomainInput from "../../Common/DomainInput";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     stepContent: {
-        padding: "16px 32px 16px 32px"
+        padding: "16px 32px 16px 32px",
     },
     form: {
         maxWidth: 400,
-        marginTop: 20
+        marginTop: 20,
     },
     formContainer: {
         [theme.breakpoints.up("md")]: {
-            padding: "0px 24px 0 24px"
-        }
+            padding: "0px 24px 0 24px",
+        },
     },
     subStepContainer: {
         display: "flex",
@@ -41,11 +41,11 @@ const useStyles = makeStyles(theme => ({
         padding: 10,
         transition: theme.transitions.create("background-color", {
             easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen
+            duration: theme.transitions.duration.leavingScreen,
         }),
         "&:focus-within": {
-            backgroundColor: theme.palette.background.default
-        }
+            backgroundColor: theme.palette.background.default,
+        },
     },
     stepNumber: {
         width: 20,
@@ -53,16 +53,16 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: lighten(theme.palette.secondary.light, 0.2),
         color: theme.palette.secondary.contrastText,
         textAlign: "center",
-        borderRadius: " 50%"
+        borderRadius: " 50%",
     },
     stepNumberContainer: {
-        marginRight: 10
+        marginRight: 10,
     },
     stepFooter: {
-        marginTop: 32
+        marginTop: 32,
     },
     button: {
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1),
     },
     viewButtonLabel: { textTransform: "none" },
     "@global": {
@@ -73,32 +73,32 @@ const useStyles = makeStyles(theme => ({
             fontFamily:
                 ' Consolas, "Liberation Mono", Menlo, Courier, monospace',
             borderRadius: "2px",
-            backgroundColor: "rgba(255,229,100,0.1)"
-        }
-    }
+            backgroundColor: "rgba(255,229,100,0.1)",
+        },
+    },
 }));
 
 const steps = [
     {
         title: "应用授权",
-        optional: false
+        optional: false,
     },
     {
         title: "上传路径",
-        optional: false
+        optional: false,
     },
     {
         title: "上传限制",
-        optional: false
+        optional: false,
     },
     {
         title: "账号授权",
-        optional: false
+        optional: false,
     },
     {
         title: "完成",
-        optional: false
-    }
+        optional: false,
+    },
 ];
 
 export default function OneDriveGuide(props) {
@@ -112,6 +112,11 @@ export default function OneDriveGuide(props) {
     const [useCDN, setUseCDN] = useState(
         props.policy && props.policy.OptionsSerialized.od_proxy
             ? props.policy.OptionsSerialized.od_proxy !== ""
+            : false
+    );
+    const [useSharePoint, setUseSharePoint] = useState(
+        props.policy && props.policy.OptionsSerialized.od_driver
+            ? props.policy.OptionsSerialized.od_driver !== ""
             : false
     );
     const [policy, setPolicy] = useState(
@@ -134,8 +139,9 @@ export default function OneDriveGuide(props) {
                   OptionsSerialized: {
                       file_type: "",
                       od_redirect: "",
-                      od_proxy: ""
-                  }
+                      od_proxy: "",
+                      od_driver: "",
+                  },
               }
     );
     const [policyID, setPolicyID] = useState(
@@ -143,24 +149,24 @@ export default function OneDriveGuide(props) {
     );
     const [httpsAlert, setHttpsAlert] = useState(false);
 
-    const handleChange = name => event => {
+    const handleChange = (name) => (event) => {
         setPolicy({
             ...policy,
-            [name]: event.target.value
+            [name]: event.target.value,
         });
     };
 
-    const handleOptionChange = name => event => {
+    const handleOptionChange = (name) => (event) => {
         setPolicy({
             ...policy,
             OptionsSerialized: {
                 ...policy.OptionsSerialized,
-                [name]: event.target.value
-            }
+                [name]: event.target.value,
+            },
         });
     };
 
-    const isStepSkipped = step => {
+    const isStepSkipped = (step) => {
         return skipped.has(step);
     };
 
@@ -173,9 +179,9 @@ export default function OneDriveGuide(props) {
 
     useEffect(() => {
         API.post("/admin/setting", {
-            keys: ["siteURL"]
+            keys: ["siteURL"],
         })
-            .then(response => {
+            .then((response) => {
                 if (!response.data.siteURL.startsWith("https://")) {
                     setHttpsAlert(true);
                 }
@@ -187,12 +193,12 @@ export default function OneDriveGuide(props) {
                             od_redirect: new URL(
                                 "/api/v3/callback/onedrive/auth",
                                 response.data.siteURL
-                            ).toString()
-                        }
+                            ).toString(),
+                        },
                     });
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 ToggleSnackbar("top", "right", error.message, "error");
             });
     }, []);
@@ -200,16 +206,16 @@ export default function OneDriveGuide(props) {
     const statOAuth = () => {
         setLoading(true);
         API.get("/admin/policy/" + policyID + "/oauth")
-            .then(response => {
+            .then((response) => {
                 window.location.href = response.data;
             })
-            .catch(error => {
+            .catch((error) => {
                 ToggleSnackbar("top", "right", error.message, "error");
                 setLoading(false);
             });
     };
 
-    const submitPolicy = e => {
+    const submitPolicy = (e) => {
         e.preventDefault();
         setLoading(true);
 
@@ -226,6 +232,10 @@ export default function OneDriveGuide(props) {
 
         if (!useCDN) {
             policyCopy.OptionsSerialized.od_proxy = "";
+        }
+
+        if (!useSharePoint) {
+            policyCopy.OptionsSerialized.od_driver = "";
         }
 
         // 类型转换
@@ -245,9 +255,9 @@ export default function OneDriveGuide(props) {
         }
 
         API.post("/admin/policy", {
-            policy: policyCopy
+            policy: policyCopy,
         })
-            .then(response => {
+            .then((response) => {
                 ToggleSnackbar(
                     "top",
                     "right",
@@ -257,7 +267,7 @@ export default function OneDriveGuide(props) {
                 setActiveStep(3);
                 setPolicyID(response.data);
             })
-            .catch(error => {
+            .catch((error) => {
                 ToggleSnackbar("top", "right", error.message, "error");
             })
             .then(() => {
@@ -274,11 +284,11 @@ export default function OneDriveGuide(props) {
                 onClose={() => setHttpsAlert(false)}
                 title={"警告"}
                 msg={
-                    "您必须启用 HTTPS 才能使用 OneDrive 存储策略；启用后同步更改 参数设置 - 站点信息 - 站点URL。"
+                    "您必须启用 HTTPS 才能使用 OneDrive/SharePoint 存储策略；启用后同步更改 参数设置 - 站点信息 - 站点URL。"
                 }
             />
             <Typography variant={"h6"}>
-                {props.policy ? "修改" : "添加"} OneDrive 存储策略
+                {props.policy ? "修改" : "添加"} OneDrive/SharePoint 存储策略
             </Typography>
             <Stepper activeStep={activeStep}>
                 {steps.map((label, index) => {
@@ -303,7 +313,7 @@ export default function OneDriveGuide(props) {
             {activeStep === 0 && (
                 <form
                     className={classes.stepContent}
-                    onSubmit={e => {
+                    onSubmit={(e) => {
                         e.preventDefault();
                         setActiveStep(1);
                     }}
@@ -431,7 +441,7 @@ export default function OneDriveGuide(props) {
                         </div>
                         <div className={classes.subStepContent}>
                             <Typography variant={"body2"}>
-                                选择您的 OneDrive 账号类型：
+                                选择您的 Microsoft 365 账号类型：
                             </Typography>
                             <div className={classes.form}>
                                 <FormControl required component="fieldset">
@@ -471,6 +481,69 @@ export default function OneDriveGuide(props) {
                         </div>
                         <div className={classes.subStepContent}>
                             <Typography variant={"body2"}>
+                                是否将文件存放在 SharePoint 中？
+                            </Typography>
+                            <div className={classes.form}>
+                                <FormControl required component="fieldset">
+                                    <RadioGroup
+                                        required
+                                        value={useSharePoint.toString()}
+                                        onChange={(e) => {
+                                            setUseSharePoint(
+                                                e.target.value === "true"
+                                            );
+                                        }}
+                                        row
+                                    >
+                                        <FormControlLabel
+                                            value={"true"}
+                                            control={
+                                                <Radio color={"primary"} />
+                                            }
+                                            label="存到指定 SharePoint 中"
+                                        />
+                                        <FormControlLabel
+                                            value={"false"}
+                                            control={
+                                                <Radio color={"primary"} />
+                                            }
+                                            label="存到账号默认 OneDrive 驱动器中"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </div>
+                            <Collapse in={useSharePoint}>
+                                <div className={classes.form}>
+                                    <FormControl fullWidth>
+                                        <InputLabel htmlFor="component-helper">
+                                            SharePoint 站点地址
+                                        </InputLabel>
+                                        <Input
+                                            placeholder={
+                                                "https://example.sharepoint.com/sites/demo"
+                                            }
+                                            value={
+                                                policy.OptionsSerialized
+                                                    .od_driver
+                                            }
+                                            onChange={handleOptionChange(
+                                                "od_driver"
+                                            )}
+                                            required={useSharePoint}
+                                            label={"SharePoint 站点地址"}
+                                        />
+                                    </FormControl>
+                                </div>
+                            </Collapse>
+                        </div>
+                    </div>
+
+                    <div className={classes.subStepContainer}>
+                        <div className={classes.stepNumberContainer}>
+                            <div className={classes.stepNumber}>8</div>
+                        </div>
+                        <div className={classes.subStepContent}>
+                            <Typography variant={"body2"}>
                                 是否要在文件下载时替换为使用自建的反代服务器？
                             </Typography>
                             <div className={classes.form}>
@@ -478,7 +551,7 @@ export default function OneDriveGuide(props) {
                                     <RadioGroup
                                         required
                                         value={useCDN.toString()}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                             setUseCDN(
                                                 e.target.value === "true"
                                             );
@@ -524,7 +597,7 @@ export default function OneDriveGuide(props) {
 
                     <div className={classes.subStepContainer}>
                         <div className={classes.stepNumberContainer}>
-                            <div className={classes.stepNumber}>8</div>
+                            <div className={classes.stepNumber}>9</div>
                         </div>
                         <div className={classes.subStepContent}>
                             <Typography variant={"body2"}>
@@ -561,7 +634,7 @@ export default function OneDriveGuide(props) {
             {activeStep === 1 && (
                 <form
                     className={classes.stepContent}
-                    onSubmit={e => {
+                    onSubmit={(e) => {
                         e.preventDefault();
                         setActiveStep(2);
                     }}
@@ -578,7 +651,7 @@ export default function OneDriveGuide(props) {
                                 可用魔法变量可参考{" "}
                                 <Link
                                     color={"secondary"}
-                                    onClick={e => {
+                                    onClick={(e) => {
                                         e.preventDefault();
                                         setMagicVar("path");
                                     }}
@@ -613,7 +686,7 @@ export default function OneDriveGuide(props) {
                                 可用魔法变量可参考{" "}
                                 <Link
                                     color={"secondary"}
-                                    onClick={e => {
+                                    onClick={(e) => {
                                         e.preventDefault();
                                         setMagicVar("file");
                                     }}
@@ -710,16 +783,16 @@ export default function OneDriveGuide(props) {
                                                 ? "false"
                                                 : "true"
                                         }
-                                        onChange={e => {
+                                        onChange={(e) => {
                                             if (e.target.value === "true") {
                                                 setPolicy({
                                                     ...policy,
-                                                    MaxSize: "10485760"
+                                                    MaxSize: "10485760",
                                                 });
                                             } else {
                                                 setPolicy({
                                                     ...policy,
-                                                    MaxSize: "0"
+                                                    MaxSize: "0",
                                                 });
                                             }
                                         }}
@@ -788,23 +861,23 @@ export default function OneDriveGuide(props) {
                                                 ? "false"
                                                 : "true"
                                         }
-                                        onChange={e => {
+                                        onChange={(e) => {
                                             if (e.target.value === "true") {
                                                 setPolicy({
                                                     ...policy,
                                                     OptionsSerialized: {
                                                         ...policy.OptionsSerialized,
                                                         file_type:
-                                                            "jpg,png,mp4,zip,rar"
-                                                    }
+                                                            "jpg,png,mp4,zip,rar",
+                                                    },
                                                 });
                                             } else {
                                                 setPolicy({
                                                     ...policy,
                                                     OptionsSerialized: {
                                                         ...policy.OptionsSerialized,
-                                                        file_type: ""
-                                                    }
+                                                        file_type: "",
+                                                    },
                                                 });
                                             }
                                         }}

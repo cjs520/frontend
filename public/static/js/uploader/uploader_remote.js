@@ -6,7 +6,7 @@ function getCookieByString(cookieName) {
     if (end == -1) end = document.cookie.length;
     return document.cookie.substring(start, end);
 }
-(function(global) {
+(function (global) {
     /**
      * Creates new cookie or removes cookie with negative expiration
      * @param  key       The key or identifier for the store
@@ -43,15 +43,15 @@ function getCookieByString(cookieName) {
     // use cookie to make a polyfill
     if (!window.localStorage) {
         window.localStorage = {
-            setItem: function(key, value) {
+            setItem: function (key, value) {
                 createCookie(key, value, 30);
             },
-            getItem: function(key) {
+            getItem: function (key) {
                 return readCookie(key);
             },
-            removeItem: function(key) {
+            removeItem: function (key) {
                 createCookie(key, "", -1);
-            }
+            },
         };
     }
 
@@ -66,7 +66,7 @@ function getCookieByString(cookieName) {
          *     it will return version of current IE browser
          * @return {Number|Boolean} IE version or false
          */
-        this.detectIEVersion = function() {
+        this.detectIEVersion = function () {
             var v = 4,
                 div = document.createElement("div"),
                 all = div.getElementsByTagName("i");
@@ -88,7 +88,7 @@ function getCookieByString(cookieName) {
             INFO: 4,
             DEBUG: 5,
             TRACE: 6,
-            level: 0
+            level: 0,
         };
 
         function log(type, args) {
@@ -118,7 +118,7 @@ function getCookieByString(cookieName) {
 
         function makeLogFunc(code) {
             var func = code.toLowerCase();
-            logger[func] = function() {
+            logger[func] = function () {
                 // logger[func].history = logger[func].history || [];
                 // logger[func].history.push(arguments);
                 if (
@@ -148,7 +148,7 @@ function getCookieByString(cookieName) {
         var qiniuUploadUrls = [uploadConfig.upUrl];
         var qiniuUpHosts = {
             http: [uploadConfig.upUrl],
-            https: [uploadConfig.upUrl]
+            https: [uploadConfig.upUrl],
         };
 
         var changeUrlTimes = 0;
@@ -160,7 +160,7 @@ function getCookieByString(cookieName) {
          * else
          *     it will set 'qiniuUploadUrl' value with 'qiniuUploadUrls' looply
          */
-        this.resetUploadUrl = function() {
+        this.resetUploadUrl = function () {
             var hosts =
                 window.location.protocol === "https:"
                     ? qiniuUpHosts.https
@@ -178,7 +178,7 @@ function getCookieByString(cookieName) {
          * @param  {String}  url of a file
          * @return {Boolean} file is a image or not
          */
-        this.isImage = function(url) {
+        this.isImage = function (url) {
             url = url.split(/[?#]/)[0];
             return /\.(png|jpg|jpeg|gif|bmp)$/i.test(url);
         };
@@ -191,7 +191,7 @@ function getCookieByString(cookieName) {
          *     input: test.txt
          *     output: txt
          */
-        this.getFileExtension = function(filename) {
+        this.getFileExtension = function (filename) {
             var tempArr = filename.split(".");
             var ext;
             if (
@@ -210,7 +210,7 @@ function getCookieByString(cookieName) {
          * @param  {String} string to encode
          * @return {String} encoded string
          */
-        this.utf8_encode = function(argString) {
+        this.utf8_encode = function (argString) {
             // http://kevin.vanzonneveld.net
             // +   original by: Webtoolkit.info (http://www.webtoolkit.info/)
             // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -289,7 +289,7 @@ function getCookieByString(cookieName) {
             return utftext;
         };
 
-        this.base64_decode = function(data) {
+        this.base64_decode = function (data) {
             // http://kevin.vanzonneveld.net
             // +   original by: Tyler Akins (http://rumkin.com)
             // +   improved by: Thunder.m
@@ -360,7 +360,7 @@ function getCookieByString(cookieName) {
          * @param  {String} data to encode
          * @return {String} encoded data
          */
-        this.base64_encode = function(data) {
+        this.base64_encode = function (data) {
             // http://kevin.vanzonneveld.net
             // +   original by: Tyler Akins (http://rumkin.com)
             // +   improved by: Bayron Guevara
@@ -437,12 +437,12 @@ function getCookieByString(cookieName) {
          * @param {String} string in url
          * @return {String} encoded string
          */
-        this.URLSafeBase64Encode = function(v) {
+        this.URLSafeBase64Encode = function (v) {
             v = this.base64_encode(v);
             return v.replace(/\//g, "_").replace(/\+/g, "-");
         };
 
-        this.URLSafeBase64Decode = function(v) {
+        this.URLSafeBase64Decode = function (v) {
             v = v.replace(/_/g, "/").replace(/-/g, "+");
             return this.base64_decode(v);
         };
@@ -452,7 +452,7 @@ function getCookieByString(cookieName) {
          * craete object used to AJAX
          * @return {Object}
          */
-        this.createAjax = function(argument) {
+        this.createAjax = function (argument) {
             var xmlhttp = {};
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
@@ -468,7 +468,7 @@ function getCookieByString(cookieName) {
          * @param  {String} json string
          * @return {Object} object
          */
-        this.parseJSON = function(data) {
+        this.parseJSON = function (data) {
             // Attempt to parse using the native JSON parser first
             if (window.JSON && window.JSON.parse) {
                 return window.JSON.parse(data);
@@ -485,7 +485,7 @@ function getCookieByString(cookieName) {
             var text = String(data);
             rx_dangerous.lastIndex = 0;
             if (rx_dangerous.test(text)) {
-                text = text.replace(rx_dangerous, function(a) {
+                text = text.replace(rx_dangerous, function (a) {
                     return (
                         "\\u" +
                         ("0000" + a.charCodeAt(0).toString(16)).slice(-4)
@@ -513,7 +513,7 @@ function getCookieByString(cookieName) {
          * @param  {Object} object
          * @return {String} json string
          */
-        this.stringifyJSON = function(obj) {
+        this.stringifyJSON = function (obj) {
             // Attempt to parse using the native JSON parser first
             if (window.JSON && window.JSON.stringify) {
                 return window.JSON.stringify(obj);
@@ -561,7 +561,7 @@ function getCookieByString(cookieName) {
          * @param  {String} untrimed string
          * @return {String} trimed string
          */
-        this.trim = function(text) {
+        this.trim = function (text) {
             return text === null ? "" : text.replace(/^\s+|\s+$/g, "");
         };
 
@@ -570,14 +570,14 @@ function getCookieByString(cookieName) {
          * @param  {object} options to create a new uploader
          * @return {object} uploader
          */
-        this.uploader = function(op) {
+        this.uploader = function (op) {
             /********** inner function define start **********/
 
             // according the different condition to reset chunk size
             // and the upload strategy according with the chunk size
             // when chunk size is zero will cause to direct upload
             // see the statement binded on 'BeforeUpload' event
-            var reset_chunk_size = function() {
+            var reset_chunk_size = function () {
                 var ie = that.detectIEVersion();
                 var BLOCK_BITS, MAX_CHUNK_SIZE, chunk_size;
                 // case Safari 5、Windows 7、iOS 7 set isSpecialSafari to true
@@ -618,7 +618,7 @@ function getCookieByString(cookieName) {
                 // if op.chunk_size set 0 will be cause to direct upload
             };
 
-            var getHosts = function(hosts) {
+            var getHosts = function (hosts) {
                 var result = [];
                 for (var i = 0; i < hosts.length; i++) {
                     var host = hosts[i];
@@ -631,7 +631,7 @@ function getCookieByString(cookieName) {
                 return result;
             };
 
-            var getPutPolicy = function(uptoken) {
+            var getPutPolicy = function (uptoken) {
                 if (
                     uploadConfig.saveType == "local" ||
                     uploadConfig.saveType == "oss" ||
@@ -657,7 +657,7 @@ function getCookieByString(cookieName) {
                 }
             };
 
-            var getUpHosts = function(uptoken) {
+            var getUpHosts = function (uptoken) {
                 var putPolicy = getPutPolicy(uptoken);
                 // var uphosts_url = "//uc.qbox.me/v1/query?ak="+ak+"&bucket="+putPolicy.scope;
                 // IE 9- is not support protocal relative url
@@ -683,7 +683,7 @@ function getCookieByString(cookieName) {
                     that.resetUploadUrl();
                 } else {
                     ajax.open("GET", uphosts_url, false);
-                    var onreadystatechange = function() {
+                    var onreadystatechange = function () {
                         logger.debug("ajax.readyState: ", ajax.readyState);
                         if (ajax.readyState === 4) {
                             logger.debug("ajax.status: ", ajax.status);
@@ -721,7 +721,7 @@ function getCookieByString(cookieName) {
                 return;
             };
 
-            var getUptoken = function(file) {
+            var getUptoken = function (file) {
                 if (uploadConfig.saveType == "remote") {
                     return that.token;
                 }
@@ -729,7 +729,7 @@ function getCookieByString(cookieName) {
                     !that.token ||
                     (op.uptoken_url && that.tokenInfo.isExpired())
                 ) {
-                    return getNewUpToken(file,function(){});
+                    return getNewUpToken(file, function () {});
                 } else {
                     return that.token;
                 }
@@ -740,39 +740,39 @@ function getCookieByString(cookieName) {
             // if op.uptoken has value, set uptoken with op.uptoken
             // else if op.uptoken_url has value, set uptoken from op.uptoken_url
             // else if op.uptoken_func has value, set uptoken by result of op.uptoken_func
-            var getNewUpToken = function(file,callback) {
+            var getNewUpToken = function (file, callback) {
                 if (op.uptoken) {
                     that.token = op.uptoken;
                 } else if (op.uptoken_url) {
                     logger.debug("get uptoken from: ", that.uptoken_url);
                     var ajax = that.createAjax();
-                    if (file.size === undefined){
+                    if (file.size === undefined) {
                         file.size = 0;
                     }
                     ajax.open(
                         "GET",
                         that.uptoken_url +
-                        "?path=" +
-                        encodeURIComponent(window.pathCache[file.id]) +
-                        "&size=" +
-                        file.size +
-                        "&name=" +
-                        encodeURIComponent(file.name)+
-                        "&type=remote",
+                            "?path=" +
+                            encodeURIComponent(window.pathCache[file.id]) +
+                            "&size=" +
+                            file.size +
+                            "&name=" +
+                            encodeURIComponent(file.name) +
+                            "&type=remote",
                         true
                     );
                     ajax.setRequestHeader("If-Modified-Since", "0");
                     ajax.send();
-                    ajax.onload = function (e){
-                    	if (ajax.status === 200) {
+                    ajax.onload = function (e) {
+                        if (ajax.status === 200) {
                             var res = that.parseJSON(ajax.responseText);
                             if (res.code != 0) {
                                 uploader.trigger("Error", {
                                     status: 402,
                                     response: ajax.responseText,
                                     file: file,
-                                    message:res.msg,
-                                    code: 402
+                                    message: res.msg,
+                                    code: 402,
                                 });
                                 callback();
                                 return;
@@ -781,27 +781,30 @@ function getCookieByString(cookieName) {
                             that.putPolicy = res.data.policy;
                             logger.debug("get new uptoken: ", that.token);
                             logger.debug("get new policy: ", that.putPolicy);
-                    	} else {
+                        } else {
                             uploader.trigger("Error", {
                                 status: 402,
                                 response: ajax.responseText,
                                 file: file,
-                                code: 402
+                                code: 402,
                             });
-                    		logger.error("get uptoken error: ", ajax.responseText);
-                    	}
+                            logger.error(
+                                "get uptoken error: ",
+                                ajax.responseText
+                            );
+                        }
                         callback();
-                    }
-                    ajax.onerror = function (e){
+                    };
+                    ajax.onerror = function (e) {
                         uploader.trigger("Error", {
                             status: 402,
                             response: ajax.responseText,
                             file: file,
-                            code: 402
+                            code: 402,
                         });
                         callback();
-                    	logger.error("get uptoken error: ", ajax.responseText);
-                    }
+                        logger.error("get uptoken error: ", ajax.responseText);
+                    };
                 } else if (op.uptoken_func) {
                     logger.debug("get uptoken from uptoken_func");
                     that.token = op.uptoken_func(file);
@@ -817,7 +820,7 @@ function getCookieByString(cookieName) {
             };
 
             // get file key according with the user passed options
-            var getFileKey = function(up, file, func) {
+            var getFileKey = function (up, file, func) {
                 // WARNING
                 // When you set the key in putPolicy by "scope": "bucket:key"
                 // You should understand the risk of override a file in the bucket
@@ -880,8 +883,8 @@ function getCookieByString(cookieName) {
             var _FileUploaded_Handler = op.init && op.init.FileUploaded;
 
             // replace the handler for intercept
-            op.init.Error = function() {};
-            op.init.FileUploaded = function() {};
+            op.init.Error = function () {};
+            op.init.FileUploaded = function () {};
 
             that.uptoken_url = op.uptoken_url;
             that.token = "";
@@ -895,7 +898,7 @@ function getCookieByString(cookieName) {
                 isResumeUpload: false,
                 resumeFilesize: 0,
                 startTime: "",
-                currentTime: ""
+                currentTime: "",
             };
 
             reset_chunk_size();
@@ -904,7 +907,7 @@ function getCookieByString(cookieName) {
 
             var defaultSetting = {
                 url: qiniuUploadUrl,
-                multipart_params: {}
+                multipart_params: {},
             };
             var ie = that.detectIEVersion();
             // case IE 9-
@@ -926,14 +929,14 @@ function getCookieByString(cookieName) {
             logger.debug("new plupload.Uploader(option)");
 
             // bind getNewUpToken to 'Init' event
-            uploader.bind("Init", function(up, params) {
+            uploader.bind("Init", function (up, params) {
                 logger.debug("Init event activated");
                 // if op.get_new_uptoken is not true
                 //      invoke getNewUptoken when uploader init
                 // else
                 //      getNewUptoken everytime before a new file upload
                 if (!op.get_new_uptoken) {
-                    getNewUpToken(null,function(){});
+                    getNewUpToken(null, function () {});
                 }
                 //getNewUpToken(null);
             });
@@ -943,7 +946,7 @@ function getCookieByString(cookieName) {
             // bind 'FilesAdded' event
             // when file be added and auto_start has set value
             // uploader will auto start upload the file
-            uploader.bind("FilesAdded", function(up, files) {
+            uploader.bind("FilesAdded", function (up, files) {
                 logger.debug("FilesAdded event activated");
                 var auto_start = up.getOption && up.getOption("auto_start");
                 auto_start =
@@ -951,9 +954,8 @@ function getCookieByString(cookieName) {
                 logger.debug("auto_start: ", auto_start);
                 logger.debug("files: ", files);
 
-
                 // detect is iOS
-                var is_ios = function() {
+                var is_ios = function () {
                     if (moxie.core.utils.Env.OS.toLowerCase() === "ios") {
                         return true;
                     } else {
@@ -971,7 +973,7 @@ function getCookieByString(cookieName) {
                 }
 
                 if (auto_start) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         up.start();
                         logger.debug("invoke up.start()");
                     }, 0);
@@ -992,23 +994,23 @@ function getCookieByString(cookieName) {
             // - prepare uptoken
             // - according the chunk size to make differnt upload strategy
             // - resume upload with the last breakpoint of file
-            uploader.bind("BeforeUpload", function(up, file) {
+            uploader.bind("BeforeUpload", function (up, file) {
                 logger.debug("BeforeUpload event activated");
                 // add a key named speed for file object
                 file.speed = file.speed || 0;
                 ctx = "";
 
-                var directUpload = function(up, file, func) {
+                var directUpload = function (up, file, func) {
                     speedCalInfo.startTime = new Date().getTime();
                     var multipart_params_obj;
                     if (op.save_key) {
                         multipart_params_obj = {
-                            token: that.token
+                            token: that.token,
                         };
                     } else {
                         multipart_params_obj = {
                             key: getFileKey(up, file, func),
-                            token: that.token
+                            token: that.token,
                         };
                     }
                     var ie = that.detectIEVersion();
@@ -1049,17 +1051,18 @@ function getCookieByString(cookieName) {
                         multipart: false,
                         send_file_name: false,
                         headers: {
-							"X-Policy": that.putPolicy,
-							"Authorization": that.token,
+                            "X-Policy": that.putPolicy,
+                            "X-Overwrite": "false",
+                            Authorization: that.token,
                             "X-FileName": encodeURIComponent(
                                 getFileKey(up, file, func)
-                            )
-                        }
+                            ),
+                        },
                     });
                 };
 
                 // detect is weixin or qq inner browser
-                var is_android_weixin_or_qq = function() {
+                var is_android_weixin_or_qq = function () {
                     var ua = navigator.userAgent.toLowerCase();
                     if (
                         (ua.match(/MicroMessenger/i) ||
@@ -1080,7 +1083,7 @@ function getCookieByString(cookieName) {
                 logger.debug("uploader.runtime: ", uploader.runtime);
                 logger.debug("chunk_size: ", chunk_size);
 
-                getNewUpToken(file,()=>{
+                getNewUpToken(file, () => {
                     if (that.token) {
                         getUpHosts(that.token);
                     }
@@ -1090,7 +1093,10 @@ function getCookieByString(cookieName) {
                             uploader.runtime === "flash") &&
                         chunk_size
                     ) {
-                        if (file.size < chunk_size || is_android_weixin_or_qq()) {
+                        if (
+                            file.size < chunk_size ||
+                            is_android_weixin_or_qq()
+                        ) {
                             logger.debug(
                                 "directUpload because file.size < chunk_size || is_android_weixin_or_qq()"
                             );
@@ -1118,7 +1124,8 @@ function getCookieByString(cookieName) {
                                         if (file.size === localFileInfo.total) {
                                             // TODO: if file.name and file.size is the same
                                             // but not the same file will cause error
-                                            file.percent = localFileInfo.percent;
+                                            file.percent =
+                                                localFileInfo.percent;
                                             file.loaded = localFileInfo.offset;
                                             ctx = localFileInfo.ctx;
 
@@ -1129,7 +1136,8 @@ function getCookieByString(cookieName) {
 
                                             // set block size
                                             if (
-                                                localFileInfo.offset + blockSize >
+                                                localFileInfo.offset +
+                                                    blockSize >
                                                 file.size
                                             ) {
                                                 blockSize =
@@ -1171,9 +1179,9 @@ function getCookieByString(cookieName) {
                                     chunk_size: chunk_size,
                                     required_features: "chunks",
                                     headers: {
-                                        Authorization: getUptoken(file)
+                                        Authorization: getUptoken(file),
                                     },
-                                    multipart_params: multipart_params_obj
+                                    multipart_params: multipart_params_obj,
                                 });
                             } else {
                                 up.setOption({
@@ -1182,9 +1190,10 @@ function getCookieByString(cookieName) {
                                     chunk_size: chunk_size,
                                     required_features: "chunks",
                                     headers: {
-                                        Authorization: "UpToken " + getUptoken(file)
+                                        Authorization:
+                                            "UpToken " + getUptoken(file),
                                     },
-                                    multipart_params: multipart_params_obj
+                                    multipart_params: multipart_params_obj,
                                 });
                             }
                         }
@@ -1195,22 +1204,22 @@ function getCookieByString(cookieName) {
                         // direct upload if runtime is not html5
                         directUpload(up, file, that.key_handler);
                     }
-                    if (file.status != plupload.FAILED){
+                    if (file.status != plupload.FAILED) {
                         file.status = plupload.UPLOADING;
                         up.trigger("UploadFile", file);
-                    }else{
+                    } else {
                         up.stop();
                     }
                 });
 
-                return false
+                return false;
             });
 
             logger.debug("bind BeforeUpload event");
 
             // bind 'UploadProgress' event
             // calculate upload speed
-            uploader.bind("UploadProgress", function(up, file) {
+            uploader.bind("UploadProgress", function (up, file) {
                 logger.trace("UploadProgress event activated");
                 speedCalInfo.currentTime = new Date().getTime();
                 var timeUsed =
@@ -1227,9 +1236,9 @@ function getCookieByString(cookieName) {
             var retries = qiniuUploadUrls.length;
 
             // if error is unkown switch upload url and retry
-            var unknow_error_retry = function(file) {
+            var unknow_error_retry = function (file) {
                 if (retries-- > 0) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         that.resetUploadUrl();
                         file.status = plupload.QUEUED;
                         uploader.stop();
@@ -1246,8 +1255,8 @@ function getCookieByString(cookieName) {
             // check the err.code and return the errTip
             uploader.bind(
                 "Error",
-                (function(_Error_Handler) {
-                    return function(up, err) {
+                (function (_Error_Handler) {
+                    return function (up, err) {
                         logger.error("Error event activated");
                         logger.error("err: ", err);
                         var errTip = "";
@@ -1360,7 +1369,7 @@ function getCookieByString(cookieName) {
                                     break;
                                 case 402:
                                     errTip = "无法获取上传凭证";
-                                    if (err.message){
+                                    if (err.message) {
                                         errTip = err.message;
                                     }
                                     break;
@@ -1385,15 +1394,15 @@ function getCookieByString(cookieName) {
             // - invoke mkfile api to compose chunks if upload strategy is chunk upload
             uploader.bind(
                 "FileUploaded",
-                (function(_FileUploaded_Handler) {
-                    return function(up, file, info) {
+                (function (_FileUploaded_Handler) {
+                    return function (up, file, info) {
                         logger.debug("FileUploaded event activated");
                         logger.debug("file: ", file);
                         logger.debug("info: ", info);
                         if (uploadConfig.saveType == "s3") {
                         }
-                        var last_step = function(up, file, info) {
-                          if (_FileUploaded_Handler) {
+                        var last_step = function (up, file, info) {
+                            if (_FileUploaded_Handler) {
                                 _FileUploaded_Handler(up, file, info);
                             }
                         };

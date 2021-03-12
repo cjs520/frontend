@@ -3,7 +3,8 @@ import {
     Divider,
     Tooltip,
     Typography,
-    withStyles
+    withStyles,
+    fade,
 } from "@material-ui/core";
 import { lighten } from "@material-ui/core/styles";
 import classNames from "classnames";
@@ -16,28 +17,31 @@ import { withRouter } from "react-router";
 import { baseURL } from "../../middleware/Api";
 import pathHelper from "../../utils/page";
 import TypeIcon from "./TypeIcon";
+import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
+import statusHelper from "../../utils/page";
+import Grow from "@material-ui/core/Grow";
 
-const styles = theme => ({
+const styles = (theme) => ({
     container: {
-        padding: "7px"
+        padding: "7px",
     },
 
     selected: {
         "&:hover": {
-            border: "1px solid #d0d0d0"
+            border: "1px solid #d0d0d0",
         },
-        backgroundColor:
-            theme.palette.type === "dark"
-                ? "#fff"
-                : lighten(theme.palette.primary.main, 0.8)
+        backgroundColor: fade(
+            theme.palette.primary.main,
+            theme.palette.type === "dark" ? 0.3 : 0.18
+        ),
     },
 
     notSelected: {
         "&:hover": {
             backgroundColor: theme.palette.background.default,
-            border: "1px solid #d0d0d0"
+            border: "1px solid #d0d0d0",
         },
-        backgroundColor: theme.palette.background.paper
+        backgroundColor: theme.palette.background.paper,
     },
 
     button: {
@@ -48,31 +52,29 @@ const styles = theme => ({
         transition:
             "background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
         alignItems: "initial",
-        display: "initial"
+        display: "initial",
     },
     folderNameSelected: {
         color:
-            theme.palette.type === "dark"
-                ? theme.palette.background.paper
-                : theme.palette.primary.dark,
-        fontWeight: "500"
+            theme.palette.type === "dark" ? "#fff" : theme.palette.primary.dark,
+        fontWeight: "500",
     },
     folderNameNotSelected: {
-        color: theme.palette.text.secondary
+        color: theme.palette.text.secondary,
     },
     folderName: {
         marginTop: "15px",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
         overflow: "hidden",
-        marginRight: "20px"
+        marginRight: "20px",
     },
     preview: {
         overflow: "hidden",
         height: "150px",
         width: "100%",
         borderRadius: "6px 6px 0 0",
-        backgroundColor: theme.palette.background.default
+        backgroundColor: theme.palette.background.default,
     },
     previewIcon: {
         overflow: "hidden",
@@ -80,19 +82,19 @@ const styles = theme => ({
         width: "100%",
         borderRadius: "5px 5px 0 0",
         backgroundColor: theme.palette.background.paper,
-        paddingTop: "50px"
+        paddingTop: "50px",
     },
     iconBig: {
-        fontSize: 50
+        fontSize: 50,
     },
     picPreview: {
         objectFit: "cover",
         width: "100%",
-        height: "100%"
+        height: "100%",
     },
     fileInfo: {
         height: "50px",
-        display: "flex"
+        display: "flex",
     },
     icon: {
         margin: "10px 10px 10px 16px",
@@ -100,26 +102,29 @@ const styles = theme => ({
         minWidth: "30px",
         backgroundColor: theme.palette.background.paper,
         borderRadius: "90%",
-        paddingTop: "2px",
-        color: theme.palette.text.secondary
+        paddingTop: "3px",
+        color: theme.palette.text.secondary,
     },
     hide: {
-        display: "none"
+        display: "none",
     },
     loadingAnimation: {
         borderRadius: "6px 6px 0 0",
         height: "100%",
-        width: "100%"
+        width: "100%",
     },
     shareFix: {
-        marginLeft: "20px"
-    }
+        marginLeft: "20px",
+    },
+    checkIcon: {
+        color: theme.palette.primary.main,
+    },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         path: state.navigator.path,
-        selected: state.explorer.selected
+        selected: state.explorer.selected,
     };
 };
 
@@ -129,25 +134,24 @@ const mapDispatchToProps = () => {
 
 class FileIconCompoment extends Component {
     static defaultProps = {
-        share: false
+        share: false,
     };
 
     state = {
         loading: false,
-        showPicIcon: false
+        showPicIcon: false,
     };
 
     render() {
         const { classes } = this.props;
-
         const isSelected =
-            this.props.selected.findIndex(value => {
+            this.props.selected.findIndex((value) => {
                 return value === this.props.file;
             }) !== -1;
-
         const isSharePage = pathHelper.isSharePage(
             this.props.location.pathname
         );
+        const isMobile = statusHelper.isMobile();
 
         return (
             <div className={classes.container}>
@@ -156,7 +160,7 @@ class FileIconCompoment extends Component {
                     className={classNames(
                         {
                             [classes.selected]: isSelected,
-                            [classes.notSelected]: !isSelected
+                            [classes.notSelected]: !isSelected,
                         },
                         classes.button
                     )}
@@ -170,7 +174,7 @@ class FileIconCompoment extends Component {
                                     className={classNames({
                                         [classes.hide]: this.state.loading,
                                         [classes.picPreview]: !this.state
-                                            .loading
+                                            .loading,
                                     })}
                                     src={
                                         baseURL +
@@ -201,7 +205,7 @@ class FileIconCompoment extends Component {
                                     width={170}
                                     className={classNames(
                                         {
-                                            [classes.hide]: !this.state.loading
+                                            [classes.hide]: !this.state.loading,
                                         },
                                         classes.loadingAnimation
                                     )}
@@ -233,12 +237,22 @@ class FileIconCompoment extends Component {
                     <div className={classes.fileInfo}>
                         {!this.props.share && (
                             <div
+                                onClick={this.props.onIconClick}
                                 className={classNames(classes.icon, {
                                     [classes.iconSelected]: isSelected,
-                                    [classes.iconNotSelected]: !isSelected
+                                    [classes.iconNotSelected]: !isSelected,
                                 })}
                             >
-                                <TypeIcon fileName={this.props.file.name} />
+                                {(!isSelected || !isMobile) && (
+                                    <TypeIcon fileName={this.props.file.name} />
+                                )}
+                                {isSelected && isMobile && (
+                                    <Grow in={isSelected && isMobile}>
+                                        <CheckCircleRoundedIcon
+                                            className={classes.checkIcon}
+                                        />
+                                    </Grow>
+                                )}
                             </div>
                         )}
                         <Tooltip
@@ -250,7 +264,7 @@ class FileIconCompoment extends Component {
                                 className={classNames(classes.folderName, {
                                     [classes.folderNameSelected]: isSelected,
                                     [classes.folderNameNotSelected]: !isSelected,
-                                    [classes.shareFix]: this.props.share
+                                    [classes.shareFix]: this.props.share,
                                 })}
                             >
                                 {this.props.file.name}
@@ -265,7 +279,7 @@ class FileIconCompoment extends Component {
 
 FileIconCompoment.propTypes = {
     classes: PropTypes.object.isRequired,
-    file: PropTypes.object.isRequired
+    file: PropTypes.object.isRequired,
 };
 
 const FileIcon = connect(
