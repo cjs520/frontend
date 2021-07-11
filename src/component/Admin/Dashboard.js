@@ -15,6 +15,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import {
     Assignment,
+    Category,
     CloudDownload,
     Contacts,
     Group,
@@ -218,6 +219,11 @@ const items = [
                 title: "图像处理",
                 path: "image",
                 icon: <Image />,
+            },
+            {
+                title: "验证码",
+                path: "captcha",
+                icon: <Category />,
             },
         ],
     },

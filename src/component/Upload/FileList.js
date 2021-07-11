@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import { isWidthDown } from "@material-ui/core/withWidth";
 import { darken, lighten } from "@material-ui/core/styles/colorManipulator";
 import {
@@ -19,6 +20,7 @@ import {
     ListItemSecondaryAction,
     withWidth,
     DialogContent,
+    Tooltip,
 } from "@material-ui/core";
 import TypeIcon from "../FileManager/TypeIcon";
 import { withTheme } from "@material-ui/core/styles";
@@ -108,7 +110,7 @@ class FileList extends Component {
             return f.id === file.id;
         });
         if (!file.errMsg || file.ignoreMsg) {
-            if (filesNow[fileID] && filesNow[fileID].status !== 4) {
+            if (filesNow[fileID] && !filesNow[fileID].errMsg) {
                 filesNow[fileID] = file;
                 this.setState({
                     files: filesNow,
@@ -120,7 +122,6 @@ class FileList extends Component {
     }
 
     setComplete(file) {
-        console.log("setComplete");
         const filesNow = [...this.state.files];
         const fileID = filesNow.findIndex((f) => {
             return f.id === file.id;
@@ -164,7 +165,7 @@ class FileList extends Component {
 
     cancelUpload = (file) => {
         this.props.cancelUpload(file);
-        this.deQueue(file);
+        // this.deQueue(file);
     };
 
     handleClose = () => {
@@ -353,14 +354,28 @@ class FileList extends Component {
                                     <ListItemSecondaryAction
                                         className={classes.delete}
                                     >
-                                        <IconButton
-                                            aria-label="Delete"
-                                            onClick={() =>
-                                                this.cancelUpload(item)
-                                            }
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
+                                        {item.status !== 4 && (
+                                            <IconButton
+                                                aria-label="Delete"
+                                                onClick={() =>
+                                                    this.cancelUpload(item)
+                                                }
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        )}
+                                        {item.status === 4 && (
+                                            <Tooltip title={"重试"}>
+                                                <IconButton
+                                                    aria-label="Delete"
+                                                    onClick={() =>
+                                                        this.reQueue(item)
+                                                    }
+                                                >
+                                                    <RefreshIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        )}
                                     </ListItemSecondaryAction>
                                 </ListItem>
                                 <Divider />
